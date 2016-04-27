@@ -1,4 +1,4 @@
-package edu.mccc.cos210.kc;
+package edu.mccc.cos210.coin;
 
 public class Coin {
 	public int size = 0;

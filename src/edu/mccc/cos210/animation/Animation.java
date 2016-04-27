@@ -1,4 +1,4 @@
-package edu.mccc.cos210.kc;
+package edu.mccc.cos210.animation;
 
 import java.awt.Canvas;
 

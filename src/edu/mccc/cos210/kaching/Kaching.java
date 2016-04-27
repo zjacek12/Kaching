@@ -1,4 +1,4 @@
-package edu.mccc.cos210.kc;
+package edu.mccc.cos210.kaching;
 
 import java.awt.image.BufferedImage;
 

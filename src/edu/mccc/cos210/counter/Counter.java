@@ -1,7 +1,7 @@
-package edu.mccc.cos210.kc;
+package edu.mccc.cos210.counter;
 
 import java.awt.image.BufferedImage;
-import edu.mccc.cos210.kaching.ICounter;
+import edu.mccc.cos210.ICounter;
 
 public class Counter implements ICounter {
 	public double result = 0;
