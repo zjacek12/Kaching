@@ -48,14 +48,4 @@ public class MyWindow extends JPanel {
 		g2d.dispose();
 	}
 // TODO: make it so we can switch between displays. EX: startup -> animation -> end screen
-	@SuppressWarnings("unused")
-	private class MyBufferedImage extends BufferedImage {
-		public MyBufferedImage(int width, int height, int type) {
-			super(width, height, type);
-			paintSelf(createGraphics());
-		}
-
-		private void paintSelf(Graphics2D g2d) {
-		}
-	}
 }

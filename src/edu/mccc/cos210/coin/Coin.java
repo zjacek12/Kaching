@@ -59,6 +59,6 @@ public class Coin {
 			case 1: coinName = "Penny";
 				break;
 		}
-		return coinName +" X: " +xPos + "Y :" +yPos ;
+		return coinName +" X: " +xPos + "Y :" +yPos;
 	}
 }
