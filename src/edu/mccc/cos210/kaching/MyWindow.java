@@ -1,31 +1,33 @@
 package edu.mccc.cos210.kaching;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+
 public class MyWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public MyWindow() {
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(1024, 768));
+		setPreferredSize(new Dimension(600, 400));
 		setFocusable(true);
 	}
 	
-	private BufferedImage loadTex() {
-		BufferedImage bi = null;
-		try {
-			bi = ImageIO.read(new File("./change.png"));
-		} catch (Exception ex) {
-			System.out.println("something fucked up loading img");
-			ex.printStackTrace();
-			System.exit(-1);
+	public BufferedImage loadImage() {
+		FilePicker picker = new FilePicker();
+		BufferedImage bi = picker.getImage();
+		if (bi == null){
+			try {
+				bi = ImageIO.read(new File("./change.png"));
+			} catch (Exception ex) {
+				System.out.println("something fucked up loading img");
+				ex.printStackTrace();
+				System.exit(-1);
+			}
 		}
 		return bi;
 	}
@@ -33,18 +35,13 @@ public class MyWindow extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g.create();
-		AffineTransform gat = new AffineTransform();
-		gat.translate(getWidth() / 2.0, getHeight() / 2);
-		gat.scale(1.0, 1.0);
-		g2d.transform(gat);
 		g2d.setColor(Color.BLACK);
 		g2d.drawImage(
-				loadTex(),
-				null,
-				-512,
-				-384
+			loadImage(),
+			null,
+			0,
+			0
 			);
-		
 		g2d.dispose();
 	}
 // TODO: make it so we can switch between displays. EX: startup -> animation -> end screen
