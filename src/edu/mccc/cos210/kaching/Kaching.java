@@ -5,10 +5,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -28,6 +29,8 @@ public class Kaching extends JFrame implements ActionListener {
 		jf.setLocationRelativeTo(null);
 		jf.setVisible(true);
 		fdl.setVisible(false);
+		fdl.setFile("*.jpg");
+		fdl.setFilenameFilter((dir, name) -> name.endsWith(".jpg"));
 		fds.setVisible(false);
 		JButton jb = new JButton("Load Image");
 		jb.addActionListener(
@@ -36,7 +39,9 @@ public class Kaching extends JFrame implements ActionListener {
 						try {
 							fdl.setVisible(true);
 							if (fdl.getFile() != null) {
-							
+								String file = fdl.getFile();
+								System.out.println(file);
+								BufferedImage image = ImageIO.read(); //need make String file into type File
 							}
 						} catch (Exception e) {
 							System.err.println(e.getMessage());
