@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 
-public class Kaching {
+public class Kaching extends JFrame {
+	private static final long serialVersionUID = 1L;
 	public Kaching() {	
 		JFrame jf = new JFrame("KACHING");
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,11 +20,8 @@ public class Kaching {
 	public static void main(String[] sa) {	
 		EventQueue.invokeLater(Kaching::new);
 	}
-	public void saveImage(BufferedImage bi) {	
-	}
-	public void algorithmPriority(BufferedImage bi) {	
-	}
-	public void filePicker() {	
+	public void algorithmPriority(BufferedImage bi) {
+		
 	}
 	public void startAnimation() {	
 	}

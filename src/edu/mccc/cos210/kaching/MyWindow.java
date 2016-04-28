@@ -35,7 +35,7 @@ public class MyWindow extends JPanel {
 		Graphics2D g2d = (Graphics2D) g.create();
 		AffineTransform gat = new AffineTransform();
 		gat.translate(getWidth() / 2.0, getHeight() / 2);
-		gat.scale(1.0, -1.0);
+		gat.scale(1.0, 1.0);
 		g2d.transform(gat);
 		g2d.setColor(Color.BLACK);
 		g2d.drawImage(
