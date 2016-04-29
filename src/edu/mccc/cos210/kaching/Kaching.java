@@ -1,15 +1,11 @@
 package edu.mccc.cos210.kaching;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
-import javax.swing.JToolBar;
 import edu.mccc.cos210.animation.Animation;
-
-
 
 public class Kaching extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -21,7 +17,7 @@ public class Kaching extends JFrame {
 		jf.setLayout(layout);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jf.add(new MyWindow());
-		jf.add(animation, BorderLayout.CENTER);
+		jf.add(animation, layout);
 		jf.getContentPane().setBackground(Color.BLACK);
 		jf.pack();
 		jf.setResizable(true);

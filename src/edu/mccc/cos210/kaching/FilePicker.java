@@ -7,11 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLayer;
-//import javax.swing.JPanel;
 
 public class FilePicker extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
