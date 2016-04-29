@@ -7,8 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayer;
+//import javax.swing.JPanel;
 
 public class FilePicker extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -17,20 +20,19 @@ public class FilePicker extends JFrame implements ActionListener {
 	private Dimension dimension = null;
 	private BufferedImage image = null;
 	public FilePicker () {
-		fdl = new FileDialog(this, "Load", FileDialog.LOAD);
-		fds = new FileDialog(this, "Save As...", FileDialog.SAVE);
-		dimension = new Dimension(100, 75);
+			fdl = new FileDialog(this, "Load", FileDialog.LOAD);
+			fds = new FileDialog(this, "Save As...", FileDialog.SAVE);
+			dimension = new Dimension(100, 75);
 	}
 	public FilePicker (int dimensionx, int dimensiony) {
-		fdl = new FileDialog(this, "Load", FileDialog.LOAD);
-		fds = new FileDialog(this, "Save As...", FileDialog.SAVE);
-		dimension = new Dimension(dimensionx, dimensiony);
+			fdl = new FileDialog(this, "Load", FileDialog.LOAD);
+			fds = new FileDialog(this, "Save As...", FileDialog.SAVE);
+			dimension = new Dimension(dimensionx, dimensiony);
 	}
 	public JButton setUpLoad () {
 	fdl.setVisible(false);
 	fdl.setFile("*.jpg");
 	fdl.setFilenameFilter((dir, name) -> name.endsWith(".jpg"));
-	fds.setVisible(false);
 	JButton jb = new JButton("Load Image");
 	jb.addActionListener(
 			new ActionListener() {
@@ -41,7 +43,7 @@ public class FilePicker extends JFrame implements ActionListener {
 							String fileDir = fdl.getDirectory();
 							String fileName = fdl.getFile();
 							System.out.println(fileDir + fileName);
-							image = ImageIO.read(new File(fileDir + fileName)); 
+							image = (BufferedImage)ImageIO.read(new File(fileDir + fileName));
 						}
 					} catch (Exception e) {
 						System.err.println(e.getMessage());
@@ -66,6 +68,7 @@ public class FilePicker extends JFrame implements ActionListener {
 		return jb;
 	}
 	public JButton setUpSave () {
+		fds.setVisible(false);
 		JButton jb = new JButton("Save As...");
 		jb.addActionListener(
 			new ActionListener() {
@@ -92,6 +95,6 @@ public class FilePicker extends JFrame implements ActionListener {
 		this.image = img;
 	}
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent ae) {
 	}
 }
