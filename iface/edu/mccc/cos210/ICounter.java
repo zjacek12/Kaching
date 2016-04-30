@@ -1,8 +1,8 @@
 package edu.mccc.cos210;
 
-import java.awt.image.BufferedImage;
+import edu.mccc.cos210.coin.Coin;
 
 public interface ICounter {
-	public void analyze(BufferedImage bi);
-	public double getResult(int[] coins);
+	public void analyze();
+	public int getResult(Coin[] coins);
 }

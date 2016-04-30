@@ -13,6 +13,17 @@ public class Coin {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
+	public Coin(int size, String color, int xPos, int yPos) {
+		this.size = size;
+		this.color = color;
+		this.xPos = xPos;
+		this.yPos = yPos;
+	}
+	public Coin(int size, int xPos, int yPos) {
+		this.size = size;
+		this.xPos = xPos;
+		this.yPos = yPos;
+	}
 	public int getSize() {
 		return size;
 	}
