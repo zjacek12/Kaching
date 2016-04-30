@@ -101,6 +101,12 @@ public class Counter implements ICounter {
 	public boolean isInterestEmpty() {
 		return interest.size() == 0;
 	}
+	public int getImageWidth() {
+		return w;
+	}
+	public int getImageHeight() {
+		return h;
+	}
 	@Override
 	public void analyze() {
 		for (int i = 1; i < pixelArray.length; i++) {

@@ -1,11 +1,11 @@
 package edu.mccc.cos210.coin;
 
 public class Coin {
-	public int size = 0;
-	public String color = null;
-	public int value = 0;
-	public int xPos = 0;
-	public int yPos = 0;
+	private int size = 0;
+	private String color = null;
+	private int value = 0;
+	private int xPos = 0;
+	private int yPos = 0;
 	public Coin(int size, String color, int value, int xPos, int yPos) {
 		this.size = size;
 		this.color = color;
@@ -24,10 +24,10 @@ public class Coin {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
-	public int getSize() {
+	public int getDiameter() {
 		return size;
 	}
-	public void setSize(int size) {
+	public void setDiameter(int size) {
 		this.size = size;
 	}
 	public String getColor() {

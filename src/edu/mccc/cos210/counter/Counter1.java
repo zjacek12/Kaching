@@ -1,5 +1,6 @@
 package edu.mccc.cos210.counter;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,47 +10,42 @@ import edu.mccc.cos210.coin.Coin;
 
 public class Counter1 extends Counter implements ICounter {
 	public Vector<Coin> coins = new Vector<Coin>();
-	private List<Integer> seenX = new LinkedList<Integer>();
-	private List<Integer> seenY = new LinkedList<Integer>();
+	private List<Point> seenPoint = new LinkedList<Point>();
 	public Counter1(BufferedImage bi) {
 		super(bi);
 	}
 	@Override
 	public void analyze() {
 		for (int i = 1; i < pixelArray.length; i++) {
-			if ((getPixelRed(i) < (getPixelGreen(i) + 50) && getPixelRed(i) < (getPixelBlue(i) + 50)) 
-					&& (getPixelGreen(i) < (getPixelRed(i) + 50) && getPixelGreen(i) < (getPixelBlue(i) + 50))
-					&& (getPixelRed(i) > 75 && getPixelGreen(i) > 75 && getPixelBlue(i) > 75)
-					&& !(seenXCointains(getX(i)) && seenYContains(getY(i)))) {
-				// calculates middle of top of coin 
-				int x1 = getX(i);
-				int x2 = i;
-				while ((getPixelRed(x2) < (getPixelGreen(x2) + 50) && getPixelRed(x2) < (getPixelBlue(x2) + 50)) 
-						&& (getPixelGreen(x2) < (getPixelRed(x2) + 50) && getPixelGreen(x2) < (getPixelBlue(x2) + 50))
-						&& (getPixelRed(x2) > 75 && getPixelGreen(x2) > 75 && getPixelBlue(x2) > 75)) {
-					x2++;
-				}
-				x2 = getX(x2);
-				int height = walkDown(((x2 - x1) / 2) + x1); // middle of the top of the coin
-				i = getIndex(x2, getY(i));
-				int width = walkSides(((x2 - x1) / 2) + x1);
+			if ((getPixelRed(i) < (getPixelGreen(i) + 60) && getPixelRed(i) < (getPixelBlue(i) + 60)) 
+					&& (getPixelGreen(i) < (getPixelRed(i) + 60) && getPixelGreen(i) < (getPixelBlue(i) + 60))
+					&& (getPixelRed(i) > 30 && getPixelGreen(i) > 30 && getPixelBlue(i) > 30)
+					&& !(seenPixel(getX(i), getY(i)))) {
+				int height = walkDown(midpointX(i)); // middle of the top of the coin
+				int width = walkSides(midpointX(i));
+			//	System.out.println("X: " +getX(i) +" Y: " +getY(i) +" height: " +height + " width: " +width);
 				if (height - 5 < width && height + 5 > width) {
 					coins.add(new Coin(height, getX(i), getY(i)));
 				}
 			}
 		}
 	}
-	private boolean seenXCointains(int x) {
-		for (int i:seenX) {
-			if (i == x) {
-				return true;
-			}
+	private int midpointX(int i) { //midpoint btw this pixel and end of coin
+		int x1 = getX(i);
+		int y1 = getY(i);
+		int x2 = getX(i) + 1;
+		while ((y1 < getImageHeight() && x1 < getImageWidth()) 
+				&& (getPixelRed(x2, y1) < (getPixelGreen(x2, y1) + 60) && getPixelRed(x2, y1) < (getPixelBlue(x2, y1) + 60)) 
+				&& (getPixelGreen(x2, y1) < (getPixelRed(x2, y1) + 60) && getPixelGreen(x2, y1) < (getPixelBlue(x2, y1) + 60))
+				&& (getPixelRed(x2, y1) > 30 && getPixelGreen(x2, y1) > 30 && getPixelBlue(x2, y1) > 30)) {
+			seenPoint.add(new Point(x2, y1));
+			x2++;
 		}
-		return false;
+		return getIndex((((x2 - x1) / 2) + x1), y1);
 	}
-	private boolean seenYContains(int y) {
-		for (int i:seenY) {
-			if (i == y) {
+	private boolean seenPixel(int x, int y) {
+		for (Point p:seenPoint) {
+			if (x == p.getX() && y == p.getY()) {
 				return true;
 			}
 		}
@@ -59,10 +55,11 @@ public class Counter1 extends Counter implements ICounter {
 		int x = getX(i);
 		int y = getY(i);
 		int height = 0;
-		while ((getPixelRed(x, y) < (getPixelGreen(x, y) + 50) && getPixelRed(x, y) < (getPixelBlue(x, y) + 50)) 
-				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 50) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 50))
-				&& (getPixelRed(x, y) > 75 && getPixelGreen(x, y) > 75 && getPixelBlue(x, y) > 75)) {
-			seenY.add(y);
+		while ((y < getImageHeight() && x < getImageWidth()) 
+				&& (getPixelRed(x, y) < (getPixelGreen(x, y) + 60) && getPixelRed(x, y) < (getPixelBlue(x, y) + 60)) 
+				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 60) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 60))
+				&& (getPixelRed(x, y) > 30 && getPixelGreen(x, y) > 30 && getPixelBlue(x, y) > 30)) {
+			seenPoint.add(new Point(x, y));
 			height++;
 			y++;
 		}
@@ -75,9 +72,10 @@ public class Counter1 extends Counter implements ICounter {
 		int width = 0;
 		int L = 0;
 		int R = 0;
-		while ((getPixelRed(x, y) < (getPixelGreen(x, y) + 50) && getPixelRed(x, y) < (getPixelBlue(x, y) + 50)) 
-				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 50) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 50))
-				&& (getPixelRed(x, y) > 75 && getPixelGreen(x, y) > 75 && getPixelBlue(x, y) > 75)) {
+		while ((y < getImageHeight() && x < getImageWidth()) 
+				&& (getPixelRed(x, y) < (getPixelGreen(x, y) + 60) && getPixelRed(x, y) < (getPixelBlue(x, y) + 60)) 
+				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 60) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 60))
+				&& (getPixelRed(x, y) > 30 && getPixelGreen(x, y) > 30 && getPixelBlue(x, y) > 30)) {
 			walkLeft(x, y);
 			walkRight(x, y);
 			height++;
@@ -85,29 +83,35 @@ public class Counter1 extends Counter implements ICounter {
 		}
 		L = walkLeft(x, (getY(i) + height / 2));  // Width at middle of the coin
 		R = walkRight(x, (getY(i) + height / 2));
-		if (L - 5 < R && L + 5 > R) {
-			width = L + R;
-		}
+		width = L + R;
 		return width;
 	}
 	private int walkLeft(int x, int y) {
 		int x1 = x;
-		while ((getPixelRed(x, y) < (getPixelGreen(x, y) + 50) && getPixelRed(x, y) < (getPixelBlue(x, y) + 50)) 
-				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 50) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 50))
-				&& (getPixelRed(x, y) > 75 && getPixelGreen(x, y) > 75 && getPixelBlue(x, y) > 75)) {
-			seenX.add(x1);
+		while ((y < getImageHeight() && x1 < getImageWidth()) 
+				&& (getPixelRed(x1, y) < (getPixelGreen(x1, y) + 60) && getPixelRed(x1, y) < (getPixelBlue(x1, y) + 60)) 
+				&& (getPixelGreen(x1, y) < (getPixelRed(x1, y) + 60) && getPixelGreen(x1, y) < (getPixelBlue(x1, y) + 60))
+				&& (getPixelRed(x1, y) > 30 && getPixelGreen(x1, y) > 30 && getPixelBlue(x1, y) > 30)) {
+			seenPoint.add(new Point(x1, y));
 			x1--;
 		}
+		seenPoint.add(new Point(x1 - 1, y));
+		seenPoint.add(new Point(x1 - 2, y));
+		seenPoint.add(new Point(x1 - 3, y));
 		return x - x1;
 	}
 	private int walkRight(int x, int y) {
 		int x1 = x;
-		while ((getPixelRed(x, y) < (getPixelGreen(x, y) + 50) && getPixelRed(x, y) < (getPixelBlue(x, y) + 50)) 
-				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 50) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 50))
-				&& (getPixelRed(x, y) > 75 && getPixelGreen(x, y) > 75 && getPixelBlue(x, y) > 75)) {
-			seenX.add(x1);
+		while ((y < getImageHeight() && x1 < getImageWidth()) 
+				&& (getPixelRed(x1, y) < (getPixelGreen(x1, y) + 60) && getPixelRed(x1, y) < (getPixelBlue(x1, y) + 60)) 
+				&& (getPixelGreen(x1, y) < (getPixelRed(x1, y) + 60) && getPixelGreen(x1, y) < (getPixelBlue(x1, y) + 60))
+				&& (getPixelRed(x1, y) > 30 && getPixelGreen(x1, y) > 30 && getPixelBlue(x1, y) > 30)) {
+			seenPoint.add(new Point(x1, y));
 			x1++;
 		}
+		seenPoint.add(new Point(x1 + 1, y));
+		seenPoint.add(new Point(x1 + 2, y));
+		seenPoint.add(new Point(x1 + 3, y));
 		return x1 - x;
 	}
 }
