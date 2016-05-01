@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import org.junit.Test;
+import edu.mccc.cos210.coin.Coin;
 import edu.mccc.cos210.counter.Counter;
 import edu.mccc.cos210.counter.Counter1;
 
@@ -116,5 +117,26 @@ public class CounterTests {
 		//	System.out.println("Diameter: " + i.getDiameter());
 		//}
 		assertEquals(1, counter.coins.size());
+	}
+	@Test
+	public void coinVectorContainsCoinsStriped() {
+		BufferedImage bi = null;
+		if (bi == null){
+			try {
+				bi = ImageIO.read(new File("./coinWpattern.jpg"));
+			} catch (Exception ex) {
+				System.out.println("something fucked up loading img");
+				ex.printStackTrace();
+				System.exit(-1);
+			}
+		}
+		Counter1 counter = new Counter1(bi);
+		counter.analyze();
+		System.out.println("CoinVectorSize: "+ counter.coins.size());
+		for (Coin i:counter.coins) {
+			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
+			System.out.println("Diameter: " + i.getDiameter());
+		}
+		assertEquals(5, counter.coins.size());
 	}
 }
