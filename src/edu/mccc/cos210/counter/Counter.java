@@ -112,14 +112,26 @@ public class Counter implements ICounter {
 	public BufferedImage getImage() {
 		return this.image;
 	}
+	public boolean pixelOfInterest(int index) {
+		return ((getPixelRed(index) < (getPixelGreen(index) + 45) && getPixelRed(index) < (getPixelBlue(index) + 45)) 
+				&& (getPixelGreen(index) < (getPixelRed(index) + 60) && getPixelGreen(index) < (getPixelBlue(index) + 60))
+				&& (getPixelBlue(index) < (getPixelRed(index) + 90) && getPixelBlue(index) < (getPixelGreen(index) + 60))
+				&& (getPixelRed(index) > 50 && getPixelGreen(index) > 50 && getPixelBlue(index) > 50)
+				);
+	}
+
+	public boolean pixelOfInterest(int x, int y) {
+		return ((y < getImageHeight() && x < getImageWidth()) 
+				&& (getPixelRed(x, y) < (getPixelGreen(x, y) + 45) && getPixelRed(x, y) < (getPixelBlue(x, y) + 45)) 
+				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 70) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 50))
+				&& (getPixelBlue(x, y) < (getPixelRed(x, y) + 90) && getPixelBlue(x, y) < (getPixelGreen(x, y) + 60))
+				&& (getPixelRed(x, y) > 50 && getPixelGreen(x, y) > 50 && getPixelBlue(x, y) > 50)
+				);
+	}
 	@Override
 	public void analyze() {
 		for (int i = 1; i < pixelArray.length; i++) {
-			if ((getPixelRed(i) < (getPixelGreen(i) + 45) && getPixelRed(i) < (getPixelBlue(i) + 45)) 
-					&& (getPixelGreen(i) < (getPixelRed(i) + 60) && getPixelGreen(i) < (getPixelBlue(i) + 60))
-					&& (getPixelBlue(i) < (getPixelRed(i) + 90) && getPixelBlue(i) < (getPixelGreen(i) + 60))
-					&& (getPixelRed(i) > 50 && getPixelGreen(i) > 50 && getPixelBlue(i) > 50)
-					) {
+			if (pixelOfInterest(i)) {
 				int a = 0;
 				interest.add(a, new Vector<Integer>());
 				interest.get(a).add(0,getX(i));

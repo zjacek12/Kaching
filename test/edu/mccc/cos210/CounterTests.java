@@ -1,11 +1,11 @@
 package edu.mccc.cos210;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import org.junit.Test;
-import edu.mccc.cos210.coin.Coin;
 import edu.mccc.cos210.counter.Counter;
 import edu.mccc.cos210.counter.Counter1;
 
@@ -68,11 +68,11 @@ public class CounterTests {
 		}
 		Counter1 counter = new Counter1(bi);
 		counter.analyze();
-		System.out.println(counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-		}
+		//System.out.println(counter.coins.size());
+		//for (Coin i:counter.coins) {
+		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
+		//	System.out.println("Diameter: " + i.getDiameter());
+		//}
 		assertEquals(counter.coins.size(), 7);
 	}
 	@Test
@@ -80,7 +80,7 @@ public class CounterTests {
 		BufferedImage bi = null;
 		if (bi == null){
 			try {
-				bi = ImageIO.read(new File("./images.jpg"));
+				bi = ImageIO.read(new File("./images4.jpg"));
 			} catch (Exception ex) {
 				System.out.println("something fucked up loading img");
 				ex.printStackTrace();
@@ -89,12 +89,12 @@ public class CounterTests {
 		}
 		Counter1 counter = new Counter1(bi);
 		counter.analyze();
-		System.out.println("RED: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-		}
-		assertEquals(counter.coins.size(), 1);
+		//System.out.println("RED: "+ counter.coins.size());
+		//for (Coin i:counter.coins) {
+		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
+		//	System.out.println("Diameter: " + i.getDiameter());
+		//}
+		assertEquals(counter.coins.size(), 4);
 	}
 	@Test
 	public void coinVectorContainsCoinsRedBackground() {
@@ -110,11 +110,11 @@ public class CounterTests {
 		}
 		Counter1 counter = new Counter1(bi);
 		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-		}
+		//System.out.println("CoinVectorSize: "+ counter.coins.size());
+		//for (Coin i:counter.coins) {
+		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
+		//	System.out.println("Diameter: " + i.getDiameter());
+		//}
 		assertEquals(1, counter.coins.size());
 	}
 }
