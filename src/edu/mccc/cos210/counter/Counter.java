@@ -23,8 +23,10 @@ public class Counter implements ICounter {
 	    this.h = image.getHeight();
 	    generateRGBArray();
 	}
-	private void generateRGBArray() {
-		pixelArray = new int[w * h];
+	public void generateRGBArray() {
+		if (pixelArray == null){
+			pixelArray = new int[w * h];
+		}
 		int i = 0;
 		for (int yIndex = 0; yIndex < h ; yIndex++) {
 			for (int xIndex = 0; xIndex < w; xIndex++) {
@@ -107,12 +109,15 @@ public class Counter implements ICounter {
 	public int getImageHeight() {
 		return h;
 	}
+	public BufferedImage getImage() {
+		return this.image;
+	}
 	@Override
 	public void analyze() {
 		for (int i = 1; i < pixelArray.length; i++) {
-			if ((getPixelRed(i) < (getPixelGreen(i) + 50) && getPixelRed(i) < (getPixelBlue(i) + 50)) 
-					&& (getPixelGreen(i) < (getPixelRed(i) + 50) && getPixelGreen(i) < (getPixelBlue(i) + 50))
-					&& (getPixelRed(i) > 75 && getPixelGreen(i) > 75 && getPixelBlue(i) > 75)) {
+			if ((getPixelRed(i) < (getPixelGreen(i) + 60) && getPixelRed(i) < (getPixelBlue(i) + 80)) 
+					&& (getPixelGreen(i) < (getPixelRed(i) + 60) && getPixelGreen(i) < (getPixelBlue(i) + 80))
+					&& (getPixelRed(i) > 25 && getPixelGreen(i) > 25 && getPixelBlue(i) > 25)) {
 				int a = 0;
 				interest.add(a, new Vector<Integer>());
 				interest.get(a).add(0,getX(i));

@@ -68,12 +68,12 @@ public class CounterTests {
 		}
 		Counter1 counter = new Counter1(bi);
 		counter.analyze();
-		//System.out.println(counter.coins.size());
-		//for (Coin i:counter.coins) {
-		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-		//	System.out.println("Diameter: " + i.getDiameter());
-		//}
-		assertEquals(counter.coins.size(), 1);
+		System.out.println(counter.coins.size());
+		for (Coin i:counter.coins) {
+			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
+			System.out.println("Diameter: " + i.getDiameter());
+		}
+		assertEquals(counter.coins.size(), 7);
 	}
 	@Test
 	public void coinVectorContainsACoinRedBackground() {
@@ -89,11 +89,11 @@ public class CounterTests {
 		}
 		Counter1 counter = new Counter1(bi);
 		counter.analyze();
-	//	System.out.println("RED: "+ counter.coins.size());
-	//	for (Coin i:counter.coins) {
-	//		System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-	//		System.out.println("Diameter: " + i.getDiameter());
-	//	}
+		System.out.println("RED: "+ counter.coins.size());
+		for (Coin i:counter.coins) {
+			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
+			System.out.println("Diameter: " + i.getDiameter());
+		}
 		assertEquals(counter.coins.size(), 1);
 	}
 	@Test
@@ -101,7 +101,7 @@ public class CounterTests {
 		BufferedImage bi = null;
 		if (bi == null){
 			try {
-				bi = ImageIO.read(new File("./images4.jpg"));
+				bi = ImageIO.read(new File("./images.jpg"));
 			} catch (Exception ex) {
 				System.out.println("something fucked up loading img");
 				ex.printStackTrace();
@@ -115,6 +115,6 @@ public class CounterTests {
 			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
 			System.out.println("Diameter: " + i.getDiameter());
 		}
-		assertEquals(4, counter.coins.size());
+		assertEquals(1, counter.coins.size());
 	}
 }
