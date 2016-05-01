@@ -115,9 +115,11 @@ public class Counter implements ICounter {
 	@Override
 	public void analyze() {
 		for (int i = 1; i < pixelArray.length; i++) {
-			if ((getPixelRed(i) < (getPixelGreen(i) + 60) && getPixelRed(i) < (getPixelBlue(i) + 80)) 
-					&& (getPixelGreen(i) < (getPixelRed(i) + 60) && getPixelGreen(i) < (getPixelBlue(i) + 80))
-					&& (getPixelRed(i) > 25 && getPixelGreen(i) > 25 && getPixelBlue(i) > 25)) {
+			if ((getPixelRed(i) < (getPixelGreen(i) + 45) && getPixelRed(i) < (getPixelBlue(i) + 45)) 
+					&& (getPixelGreen(i) < (getPixelRed(i) + 60) && getPixelGreen(i) < (getPixelBlue(i) + 60))
+					&& (getPixelBlue(i) < (getPixelRed(i) + 90) && getPixelBlue(i) < (getPixelGreen(i) + 60))
+					&& (getPixelRed(i) > 50 && getPixelGreen(i) > 50 && getPixelBlue(i) > 50)
+					) {
 				int a = 0;
 				interest.add(a, new Vector<Integer>());
 				interest.get(a).add(0,getX(i));
