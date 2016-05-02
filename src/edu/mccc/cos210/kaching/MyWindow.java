@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import edu.mccc.cos210.counter.*;
 
-public class MyWindow extends JPanel  implements ActionListener {
+public class MyWindow extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	public BufferedImage ourImage = null;
 	public MyWindow() {

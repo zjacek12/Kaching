@@ -20,7 +20,6 @@ public class Counter2 extends Counter1 implements ICounter {
 		int index = getIndex(topCoinX, topCoinY);
 		int ratioLength = redStripeLength();
 		int downDistance = walkDown(index);
-		int downIndex = walkDownIndex(index);
 		int maxLeftDistance = maxLeft(index);
 		int maxLeftIndex = maxLeftIndex(index);
 		int maxRightDistance = maxRight(index);
@@ -38,7 +37,7 @@ public class Counter2 extends Counter1 implements ICounter {
 		}
 		if (downDistance > (maxLeftDistance * 2) - 5 || downDistance > (maxRightDistance * 2) - 5
 				&& getY(maxLeftIndex) - getY(maxRightIndex) < 10) {
-			
+			overlappedCoins.addAll(completeTheCircleBelowOverlap(index, ratioLength));
 		}
 	}
 	private Coin completeTheCircleLeftOverlap(int index, int ratioL){
@@ -84,6 +83,13 @@ public class Counter2 extends Counter1 implements ICounter {
 			int topOfCoinX = (int)cir1.center.x;
 			int topOfCoinY = (int)(cir1.center.y - cir1.radius);
 			localCoins.add(new Coin((int) cir1.radius * 2, ratioL, topOfCoinX, topOfCoinY));
+			p1 = new Point(getX(index),getY(index));
+			p2 = new Point(topOfCoinX - walkLeft(topOfCoinX, topOfCoinY), topOfCoinY);
+			p3 = new Point(topOfCoinX + walkRight(topOfCoinX, topOfCoinY), topOfCoinY);
+			CircleThree.Circle cir2 = CircleThree.circleFromPoints(p1, p2, p3);
+			int topOfCoinX2 = (int)cir2.center.x;
+			int topOfCoinY2 = (int)(cir2.center.y - cir2.radius);
+			localCoins.add(new Coin((int) cir2.radius * 2, ratioL, topOfCoinX2, topOfCoinY2));
 		}
 		if (botY - leftY > leftY - topY && botY - rightY > rightY - topY) { // bigger coin is on top
 			p1 = new Point(getX(index), getY(index));
@@ -94,8 +100,15 @@ public class Counter2 extends Counter1 implements ICounter {
 			int topOfCoinX = (int)cir1.center.x;
 			int topOfCoinY = (int)(cir1.center.y - cir1.radius);
 			localCoins.add(new Coin((int) cir1.radius * 2, ratioL, topOfCoinX, topOfCoinY));
+			int botOfCoinY = (int)(cir1.center.y + cir1.radius);
+			p1 = new Point(getX(walkDownIndex(index)),getY(walkDownIndex(index)));
+			p2 = new Point(topOfCoinX - walkLeft(topOfCoinX, botOfCoinY), botOfCoinY);
+			p3 = new Point(topOfCoinX + walkRight(topOfCoinX, botOfCoinY), botOfCoinY);
+			CircleThree.Circle cir2 = CircleThree.circleFromPoints(p1, p2, p3);
+			int topOfCoinX2 = (int)cir2.center.x;
+			int topOfCoinY2 = (int)(cir2.center.y - cir2.radius);
+			localCoins.add(new Coin((int) cir2.radius * 2, ratioL, topOfCoinX2, topOfCoinY2));
 		}
-		
 		return localCoins;
 	}
 	private int walkDown(int i) {
@@ -112,8 +125,10 @@ public class Counter2 extends Counter1 implements ICounter {
 	private int walkDownIndex(int i) {
 		int x = getX(i);
 		int y = getY(i) + 1;
-		while (!seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
-			seen.add(getIndex(x, y));
+		while (pixelOfInterest(x, y)) {
+			if (!seenPixel(getIndex(x, y))){
+				seen.add(getIndex(x, y));
+			}
 			y++;
 		}
 		return getIndex(x, y);
@@ -122,7 +137,7 @@ public class Counter2 extends Counter1 implements ICounter {
 		int x = getX(i);
 		int y = getY(i);
 		int L = 0;
-		while (seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
+		while (pixelOfInterest(x, y)) {
 			int Ltemp = walkLeft(x, y);
 			if (L < Ltemp) {
 				L = Ltemp;
@@ -135,7 +150,7 @@ public class Counter2 extends Counter1 implements ICounter {
 		int x = getX(i);
 		int y = getY(i);
 		int L = 0;
-		while (seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
+		while (pixelOfInterest(x, y)) {
 			int Ltemp = walkLeft(x, y);
 			if (L < Ltemp) {
 				L = Ltemp;
@@ -148,7 +163,7 @@ public class Counter2 extends Counter1 implements ICounter {
 		int x = getX(i);
 		int y = getY(i);
 		int R = 0;
-		while (seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
+		while (pixelOfInterest(x, y)) {
 			int Rtemp = walkLeft(x, y);
 			if (R < Rtemp) {
 				R = Rtemp;
@@ -161,7 +176,7 @@ public class Counter2 extends Counter1 implements ICounter {
 		int x = getX(i);
 		int y = getY(i);
 		int R = 0;
-		while (seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
+		while (pixelOfInterest(x, y)) {
 			int Rtemp = walkLeft(x, y);
 			if (R < Rtemp) {
 				R = Rtemp;
@@ -169,27 +184,6 @@ public class Counter2 extends Counter1 implements ICounter {
 			y++;
 		}
 		return getIndex(x, y);
-	}
-	@SuppressWarnings("unused")
-	private int walkSides(int i) {
-		int x = getX(i);
-		int y = getY(i);
-		int width = 0;
-		int L = 0;
-		int R = 0;
-		while (seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
-			int Ltemp = walkLeft(x, y);
-			int Rtemp = walkRight(x, y);
-			if (L < Ltemp) {
-				L = Ltemp;
-			}
-			if (R < Rtemp) {
-				R = Rtemp;
-			}
-			y++;
-		}
-		width = L + R;
-		return width;
 	}
 	private int walkRight(int x, int y) {
 		int x1 = x;
