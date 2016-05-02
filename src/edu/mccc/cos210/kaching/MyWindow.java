@@ -163,8 +163,4 @@ public class MyWindow extends JPanel  implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 908e21ca25348de61922bbcba9e785ef9593b495
