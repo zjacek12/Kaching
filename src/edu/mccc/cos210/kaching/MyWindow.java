@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,13 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import edu.mccc.cos210.counter.*;
 
-public class MyWindow extends JPanel implements ActionListener {
+public class MyWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public BufferedImage ourImage = null;
-	public MyWindow() {
+	private Kaching kaching;
+	public MyWindow(Kaching kaching) {
+		this.kaching = kaching;
 		setBackground(Color.WHITE);
 		FilePicker picker = new FilePicker();
-		setPreferredSize(new Dimension(900, 600));
+		setPreferredSize(new Dimension(1080, 900));
 		setFocusable(true);
 		add(picker.setUpLoad());
 		add(picker.setUpAnalyze());
@@ -63,7 +66,7 @@ public class MyWindow extends JPanel implements ActionListener {
 	public class FilePicker extends JFrame {
 		private static final long serialVersionUID = 1L;
 		private Dimension dimension = new Dimension(100, 75);
-		private JFileChooser jfc = new JFileChooser();
+		private JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
 		private BufferedImage bi = null;
 		public FilePicker () {
 			
@@ -97,7 +100,10 @@ public class MyWindow extends JPanel implements ActionListener {
 							//System.out.println(file);
 							try {
 								bi = ImageIO.read(file);
-								JOptionPane.showMessageDialog(null, "File selected: " + file.getAbsolutePath());
+								JOptionPane.showMessageDialog(null, "File selected: " + file.getName());
+								ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+						        kaching.setPicture(icon);
+
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(null, "File cannot be read.");
 								e.printStackTrace();
@@ -116,12 +122,17 @@ public class MyWindow extends JPanel implements ActionListener {
 						public void actionPerformed(ActionEvent ae) {
 							if (bi != null) {
 								Counter1 counter = new Counter1(bi);
+								long startTime = System.currentTimeMillis();
 								counter.analyze();
-								//counter.getResult(counter.coins);
-								//System.out.println(counter.getResult(counter.coins));
+								int result = counter.getResult(counter.coins);
+								long endTime = System.currentTimeMillis();
+								System.out.println((endTime - startTime) / 1000.0 + "s");
+								System.out.println(result);
+								JOptionPane.showMessageDialog(null, "We found " + result + " coin(s) in your image.");
 							} else {
 								JOptionPane.showMessageDialog(null, "Image not selected");
 							}
+												
 						}	
 					}
 				);
@@ -160,7 +171,5 @@ public class MyWindow extends JPanel implements ActionListener {
 		public void actionPerformed(ActionEvent ae) {
 		}
 	}
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	}
+
 }
