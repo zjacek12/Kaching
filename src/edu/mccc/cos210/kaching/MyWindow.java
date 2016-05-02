@@ -1,22 +1,25 @@
 package edu.mccc.cos210.kaching;
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FileDialog;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
+import edu.mccc.cos210.counter.*;
 
 public class MyWindow extends JPanel  implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	public BufferedImage image;
+	public BufferedImage ourImage = null;
 	public MyWindow() {
 		setBackground(Color.WHITE);
 		FilePicker picker = new FilePicker();
@@ -27,11 +30,11 @@ public class MyWindow extends JPanel  implements ActionListener {
 		add(picker.setUpSave());
 	}
 	public BufferedImage loadImage() {
-		FilePicker picker = new FilePicker();
-		BufferedImage bi = (BufferedImage) picker.getImage();
+		BufferedImage bi = null;
 		if (bi == null){
 			try {
 				bi = ImageIO.read(new File("./change.png"));
+				ourImage = bi;
 			} catch (Exception ex) {
 				System.out.println("something fucked up loading img");
 				ex.printStackTrace();
@@ -59,45 +62,50 @@ public class MyWindow extends JPanel  implements ActionListener {
 // TODO: make it so we can switch between displays. EX: startup -> animation -> end screen
 	public class FilePicker extends JFrame {
 		private static final long serialVersionUID = 1L;
-		private FileDialog fdl = null;
-		private FileDialog fds = null;
-		private Dimension dimension = null;
-		private BufferedImage image = null;
-		private String fileLocation = null;
+		private Dimension dimension = new Dimension(100, 75);
+		private JFileChooser jfc = new JFileChooser();
+		private BufferedImage bi = null;
 		public FilePicker () {
-				fdl = new FileDialog(this, "Load", FileDialog.LOAD);
-				fds = new FileDialog(this, "Save As...", FileDialog.SAVE);
-				dimension = new Dimension(100, 75);
-		}
-		public FilePicker (int dimensionx, int dimensiony) {
-				fdl = new FileDialog(this, "Load", FileDialog.LOAD);
-				fds = new FileDialog(this, "Save As...", FileDialog.SAVE);
-				dimension = new Dimension(dimensionx, dimensiony);
+			
 		}
 		public JButton setUpLoad () {
-		fdl.setVisible(false);
-		fdl.setFile("*.jpg");
-		fdl.setFilenameFilter((dir, name) -> name.endsWith(".jpg"));
 		JButton jb = new JButton("Load Image");
 		jb.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						try {
-							fdl.setVisible(true);
-							if (fdl.getFile() != null) {
-								String fileDir = fdl.getDirectory();
-								String fileName = fdl.getFile();
-								fileLocation = fileDir + fileName;
-								System.out.println(fileLocation);
-								image = (BufferedImage)ImageIO.read(new File(fileDir + fileName));
+						jfc.setFileFilter(new FileFilter() {
+							@Override
+							public boolean accept(File f) {
+								if (f.isDirectory()) {
+									return true;
+								} else {
+									return f.getName().toLowerCase().endsWith(".jpg")
+									|| f.getName().toLowerCase().endsWith(".jpeg")
+									|| f.getName().toLowerCase().endsWith(".png")
+									|| f.getName().toLowerCase().endsWith(".gif");
+								}
 							}
-						} catch (Exception e) {
-							System.err.println(e.getMessage());
-							System.exit(-1);
+							@Override
+							public String getDescription() {
+								return "Image support";
+							}	
+						});
+						jfc.showOpenDialog(rootPane);
+						int res = jfc.showOpenDialog(null);
+						if (res == JFileChooser.APPROVE_OPTION) {
+							File file = jfc.getSelectedFile();
+							//System.out.println(file);
+							try {
+								bi = ImageIO.read(file);
+								JOptionPane.showMessageDialog(null, "File selected: " + file.getAbsolutePath());
+							} catch (IOException e) {
+								JOptionPane.showMessageDialog(null, "File cannot be read.");
+								e.printStackTrace();
+							}
 						}
 					}
 				}
-			);
+			);	
 		jb.setPreferredSize(dimension);
 		return jb;
 		}
@@ -106,7 +114,14 @@ public class MyWindow extends JPanel  implements ActionListener {
 			jb.addActionListener(
 					new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-
+							if (bi != null) {
+								Counter1 counter = new Counter1(bi);
+								counter.analyze();
+								//counter.getResult(counter.coins);
+								//System.out.println(counter.getResult(counter.coins));
+							} else {
+								JOptionPane.showMessageDialog(null, "Image not selected");
+							}
 						}	
 					}
 				);
@@ -114,19 +129,21 @@ public class MyWindow extends JPanel  implements ActionListener {
 			return jb;
 		}
 		public JButton setUpSave () {
-			fds.setVisible(false);
 			JButton jb = new JButton("Save As...");
 			jb.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
-						try {
-							fds.setVisible(true);
-							if (fds.getFile() != null) {
-								
+						int res = jfc.showSaveDialog(null);
+						if (res == JFileChooser.APPROVE_OPTION) {
+							File file = jfc.getSelectedFile();
+							try {
+								ImageIO.write(bi, "jpg", file);
+								System.out.println(file);
+								System.out.println(bi);
+								JOptionPane.showMessageDialog(null, "Image " + " successfully saved.");
+							} catch (IOException e) {
+								e.printStackTrace();
 							}
-						} catch (Exception e) {
-							System.err.println(e.getMessage());
-							System.exit(-1);
 						}
 					}	
 				}
@@ -135,10 +152,10 @@ public class MyWindow extends JPanel  implements ActionListener {
 			return jb;
 		}
 		public BufferedImage getImage() {
-			return image;
+			return this.bi;
 		}
 		public void setImage(BufferedImage img) {
-			this.image = img;
+			this.bi = img;
 		}
 		public void actionPerformed(ActionEvent ae) {
 		}
@@ -146,7 +163,4 @@ public class MyWindow extends JPanel  implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 	}
-
-
 }
-
