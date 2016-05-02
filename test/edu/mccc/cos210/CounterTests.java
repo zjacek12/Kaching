@@ -136,6 +136,7 @@ public class CounterTests {
 		for (Coin i:counter.coins) {
 			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
 			System.out.println("Diameter: " + i.getDiameter());
+			System.out.println("ratioLength: " + i.getRatioLength());
 		}
 		assertEquals(5, counter.coins.size());
 	}

@@ -112,6 +112,18 @@ public class Counter implements ICounter {
 	public BufferedImage getImage() {
 		return this.image;
 	}
+	public int redStripeLength() {
+		int length = 0;
+		int index = 0;
+		while (!(getPixelRed(index) > getPixelGreen(index) + 200 && getPixelRed(index) > getPixelBlue(index) + 200)) {
+			index++;
+		}
+		while (getPixelRed(index) > getPixelGreen(index) + 200 && getPixelRed(index) > getPixelBlue(index) + 200) {
+			length++;
+			index++;
+		}
+		return length;
+	}
 	public boolean pixelOfInterest(int index) {
 		return ((getPixelRed(index) < (getPixelGreen(index) + 45) && getPixelRed(index) < (getPixelBlue(index) + 45)) 
 				&& (getPixelGreen(index) < (getPixelRed(index) + 60) && getPixelGreen(index) < (getPixelBlue(index) + 60))
@@ -147,7 +159,7 @@ public class Counter implements ICounter {
 		}
 	}
 	@Override
-	public int getResult(Coin[] a) {
+	public int getResult(Vector<Coin> a) {
 		int total = 0;
 		for (Coin coin:a) {
 			total += coin.getValue();

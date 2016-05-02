@@ -3,19 +3,27 @@ package edu.mccc.cos210.coin;
 public class Coin {
 	private int size = 0;
 	private String color = null;
-	private int value = 0;
+	private int value = 1;
 	private int xPos = 0;
 	private int yPos = 0;
-	public Coin(int size, String color, int value, int xPos, int yPos) {
+	private int ratioLength = 0;
+	
+	public Coin(int size, String color, int ratioL,int xPos, int yPos) {
+		this.ratioLength = ratioL;
 		this.size = size;
 		this.color = color;
-		this.value = value;
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
 	public Coin(int size, String color, int xPos, int yPos) {
 		this.size = size;
 		this.color = color;
+		this.xPos = xPos;
+		this.yPos = yPos;
+	}
+	public Coin(int size, int ratioL,int xPos, int yPos) {
+		this.ratioLength = ratioL;
+		this.size = size;
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
@@ -53,6 +61,12 @@ public class Coin {
 	}
 	public void setYPos(int yPos) {
 		this.yPos = yPos;
+	}
+	public int getRatioLength() {
+		return ratioLength;
+	}
+	public void setRatioLength(int ratioLength) {
+		this.ratioLength = ratioLength;
 	}
 	public String toString() {
 		String coinName = null;

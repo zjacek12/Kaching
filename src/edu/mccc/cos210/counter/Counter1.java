@@ -15,13 +15,20 @@ public class Counter1 extends Counter implements ICounter {
 	}
 	@Override
 	public void analyze() {
+		int ratioLength = redStripeLength();
 		for (int i = 1; i < pixelArray.length; i++) {
 			if (!seenPixel(i) && pixelOfInterest(i)) {
 				int height = walkDown(midpointX(i)); // middle of the top of the coin
 				int width = walkSides(midpointX(i));
 				System.out.println("X: " +getX(i) +" Y: " +getY(i) +" height: " +height + " width: " +width);
-				if (height - 5 < width && height + 5 > width && height > 1) {
-					coins.add(new Coin(height, getX(i), getY(i)));
+				if (height - 5 < width && height + 5 > width && height > 10 && width > 10) {
+					coins.add(new Coin(height, ratioLength, getX(i), getY(i)));
+				} else {
+					if ((height > width + 8 || width > height + 8)
+							&& (height > 10 && width > 10) ) {
+						Counter2 count2 = new Counter2(getImage(), getX(i), getY(i));
+						coins.addAll(count2.getOverlappedCoins());
+					}
 				}
 			}
 		}
@@ -37,7 +44,7 @@ public class Counter1 extends Counter implements ICounter {
 		}
 		return length / 2 + i;
 	}
-	private boolean seenPixel(int index) {
+	public boolean seenPixel(int index) {
 		if (seen.contains(index)){
 				return true;
 		}
@@ -57,18 +64,20 @@ public class Counter1 extends Counter implements ICounter {
 	private int walkSides(int i) {
 		int x = getX(i);
 		int y = getY(i);
-		int height = 0;
 		int width = 0;
 		int L = 0;
 		int R = 0;
 		while (seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
-			walkLeft(x, y);
-			walkRight(x, y);
-			height++;
+			int Ltemp = walkLeft(x, y);
+			int Rtemp = walkRight(x, y);
+			if (L < Ltemp) {
+				L = Ltemp;
+			}
+			if (R < Rtemp) {
+				R = Rtemp;
+			}
 			y++;
 		}
-		L = walkLeft(x, (getY(i) + height / 2)); 
-		R = walkRight(x, (getY(i) + height / 2));
 		width = L + R;
 		return width;
 	}
