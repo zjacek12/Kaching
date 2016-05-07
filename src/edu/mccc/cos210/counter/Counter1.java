@@ -116,5 +116,4 @@ public class Counter1 extends Counter implements ICounter {
 	public void add(int index) {
 		this.seen.add(index);
 	}
-	
 }
