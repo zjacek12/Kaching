@@ -144,5 +144,4 @@ public class MyWindow extends JPanel {
 		public void actionPerformed(ActionEvent ae) {
 		}
 	}
-
 }
