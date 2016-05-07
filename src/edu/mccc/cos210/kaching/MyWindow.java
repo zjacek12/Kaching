@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
-import edu.mccc.cos210.counter.Counter1;
+import edu.mccc.cos210.counter.*;
 
 
 public class MyWindow extends JPanel {
@@ -97,10 +97,14 @@ public class MyWindow extends JPanel {
 								Counter1 counter = new Counter1(bi);
 								long startTime = System.currentTimeMillis();
 								counter.analyze();
-								int result = counter.getResult(counter.coins);
+								int result = counter.getResult(counter.getCoins());
 								long endTime = System.currentTimeMillis();
+								for (int i : counter.getSeen()) {
+									int myBrush = 125;
+									bi.setRGB(counter.getX(i), counter.getY(i), myBrush);
+								}
+								kaching.setPicture(bi);
 								System.out.println((endTime - startTime) / 1000.0 + "s");
-								System.out.println(result);
 								JOptionPane.showMessageDialog(null, "We found " + result + " coin(s) in your image.");
 							} else {
 								JOptionPane.showMessageDialog(null, "Image not selected");
