@@ -16,17 +16,26 @@ public class Counter1 extends Counter implements ICounter {
 	@Override
 	public void analyze() {
 		int ratioLength = redStripeLength();
-		for (int i = 1; i < pixelArray.length; i++) {
-			if (!seenPixel(i) && pixelOfInterest(i)) {
-				int height = walkDown(midpointX(i)); // middle of the top of the coin
-				int width = walkSides(midpointX(i));
-				System.out.println("X: " +getX(i) +" Y: " +getY(i) +" height: " +height + " width: " +width);
-				if (height - 5 < width && height + 5 > width && height > 10 && width > 10) {
-					coins.add(new Coin(height, ratioLength, getX(i), getY(i)));
+		for (int i = 0; i < interest.size(); i++) {
+			//if (!seenPixel(i) && pixelOfInterest(i)) {
+			int index = interest.get(i);
+			if (!seenPixel(index)) {
+				int height = walkDownNoAdd(index);
+				if (height > 5) {
+				height = walkDown(midpointX(index)); // middle of the coin
+				} else {
+					height = 0;
+				}
+				int width = walkSides(midpointX(index));
+				System.out.println("X: " +getX(index) +" Y: " +getY(index) +" height: " +height + " width: " +width);
+				if ((width - height < 10 && height - width < 10) && height > 10 && width > 10) {
+					coins.add(new Coin(height, ratioLength, getX(index), getY(index)));
 				} else {
 					if ((height > width + 8 || width > height + 8)
 							&& (height > 10 && width > 10) ) {
-						Counter2 count2 = new Counter2(getImage(), getX(i), getY(i));
+						System.out.println("I got to counter 2");
+						Counter2 count2 = new Counter2(getImage(), getX(index), getY(index));
+						count2.analyze();
 						coins.addAll(count2.getOverlappedCoins());
 					}
 				}
@@ -37,7 +46,7 @@ public class Counter1 extends Counter implements ICounter {
 		seen.add(i);
 		int index = i;
 		int length = 0;
-		while (pixelOfInterest(index)) {
+		while (!seenPixel(index) && pixelOfInterest(index)) {
 			seen.add(index);
 			index++;
 			length++;
@@ -61,6 +70,16 @@ public class Counter1 extends Counter implements ICounter {
 		}
 		return height;
 	}
+	private int walkDownNoAdd(int i) {
+		int x = getX(i);
+		int y = getY(i) + 1;
+		int height = 1;
+		while (!seenPixel(getIndex(x, y)) && pixelOfInterest(x, y)) {
+			height++;
+			y++;
+		}
+		return height;
+	}
 	private int walkSides(int i) {
 		int x = getX(i);
 		int y = getY(i);
@@ -79,6 +98,9 @@ public class Counter1 extends Counter implements ICounter {
 			y++;
 		}
 		width = L + R;
+		if (y - getY(i) < 10){
+			width = 0;
+		}
 		return width;
 	}
 	private int walkLeft(int x, int y) {
