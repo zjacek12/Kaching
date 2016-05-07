@@ -12,11 +12,11 @@ public class Counter implements ICounter {
 	private int w = 0;
 	private int h = 0;
 	public int[] pixelArray = null;
-	public List<Integer> interest = new LinkedList<Integer>();
-	public int numQuarters = 0;
-	public int numDimes = 0;
-	public int numNickles = 0;
-	public int numPennies = 0;
+	public List<Vector<Integer>> interest = new LinkedList<Vector<Integer>>();
+	private int numQuarters = 0;
+	private int numDimes = 0;
+	private int numNickles = 0;
+	private int numPennies = 0;
 	public Counter(BufferedImage bi) {
 		this.image = bi;
 		this.w = image.getWidth();
@@ -35,11 +35,6 @@ public class Counter implements ICounter {
 				//System.out.println("X: " +xIndex);
 				//System.out.println("Y: " +yIndex);
 				i++;
-			}
-		}
-		for (int a = 1; a < pixelArray.length; a++) {
-			if (pixelOfInterest(a)) {
-				interest.add(a);
 			}
 		}
 	}
@@ -102,8 +97,8 @@ public class Counter implements ICounter {
 	public int getY(int index) {
 		return index / w;
 	}
-	public int getInterest(int index) {
-		return interest.get(index);
+	public int getInterest(int bigArrayValue, int subArrayValue) {
+		return interest.get(bigArrayValue).get(subArrayValue);
 	}
 	public boolean isInterestEmpty() {
 		return interest.size() == 0;
@@ -130,8 +125,8 @@ public class Counter implements ICounter {
 		return length;
 	}
 	public boolean pixelOfInterest(int index) {
-		return ((getPixelRed(index) < (getPixelGreen(index) + 55) && getPixelRed(index) < (getPixelBlue(index) + 55)) 
-				&& (getPixelGreen(index) < (getPixelRed(index) + 70) && getPixelGreen(index) < (getPixelBlue(index) + 50))
+		return ((getPixelRed(index) < (getPixelGreen(index) + 45) && getPixelRed(index) < (getPixelBlue(index) + 45)) 
+				&& (getPixelGreen(index) < (getPixelRed(index) + 60) && getPixelGreen(index) < (getPixelBlue(index) + 60))
 				&& (getPixelBlue(index) < (getPixelRed(index) + 90) && getPixelBlue(index) < (getPixelGreen(index) + 60))
 				/*&& (getPixelRed(index) > 50 && getPixelGreen(index) > 50 && getPixelBlue(index) > 50)*/
 				);
@@ -139,7 +134,7 @@ public class Counter implements ICounter {
 
 	public boolean pixelOfInterest(int x, int y) {
 		return ((y < getImageHeight() && x < getImageWidth()) 
-				&& (getPixelRed(x, y) < (getPixelGreen(x, y) + 55) && getPixelRed(x, y) < (getPixelBlue(x, y) + 55)) 
+				&& (getPixelRed(x, y) < (getPixelGreen(x, y) + 45) && getPixelRed(x, y) < (getPixelBlue(x, y) + 45)) 
 				&& (getPixelGreen(x, y) < (getPixelRed(x, y) + 70) && getPixelGreen(x, y) < (getPixelBlue(x, y) + 50))
 				&& (getPixelBlue(x, y) < (getPixelRed(x, y) + 90) && getPixelBlue(x, y) < (getPixelGreen(x, y) + 60))
 				/*&& (getPixelRed(x, y) > 50 && getPixelGreen(x, y) > 50 && getPixelBlue(x, y) > 50)*/
@@ -149,7 +144,17 @@ public class Counter implements ICounter {
 	public void analyze() {
 		for (int i = 1; i < pixelArray.length; i++) {
 			if (pixelOfInterest(i)) {
-				interest.add(i);
+				int a = 0;
+				interest.add(a, new Vector<Integer>());
+				interest.get(a).add(0,getX(i));
+				interest.get(a).add(1,getY(i));
+				interest.get(a).add(2,getPixelAlpha(i));
+				interest.get(a).add(3,getPixelRed(i));
+				interest.get(a).add(4,getPixelGreen(i));
+				interest.get(a).add(5,getPixelBlue(i));
+				a++;
+				//Color color = Color.ORANGE;
+				//image.setRGB(getX(i),getY(i),color.getRGB());
 			}
 		}
 	}
@@ -157,10 +162,32 @@ public class Counter implements ICounter {
 	public int getResult(Vector<Coin> a) {
 		int total = 0;
 		for (Coin coin:a) {
-			if (coin != null){
-				total += coin.getValue();
-			}
+			total += coin.getValue();
 		}
 		return total;
+	}
+	public int getNumPennies() {
+		return numPennies;
+	}
+	public void setNumPennies(int numPennies) {
+		this.numPennies = numPennies;
+	}
+	public int getNumNickles() {
+		return numNickles;
+	}
+	public void setNumNickles(int numNickles) {
+		this.numNickles = numNickles;
+	}
+	public int getNumDimes() {
+		return numDimes;
+	}
+	public void setNumDimes(int numDimes) {
+		this.numDimes = numDimes;
+	}
+	public int getNumQuarters() {
+		return numQuarters;
+	}
+	public void setNumQuarters(int numQuarters) {
+		this.numQuarters = numQuarters;
 	}
 }
