@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import org.junit.Test;
-import edu.mccc.cos210.coin.Coin;
 import edu.mccc.cos210.counter.Counter;
 import edu.mccc.cos210.counter.Counter1;
 
@@ -74,7 +73,7 @@ public class CounterTests {
 		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
 		//	System.out.println("Diameter: " + i.getDiameter());
 		//}
-		assertEquals(counter.coins.size(), 7);
+		assertEquals(counter.getCoins().size(), 7);
 	}
 	@Test
 	public void coinVectorContainsACoinRedBackground() {
@@ -95,7 +94,7 @@ public class CounterTests {
 		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
 		//	System.out.println("Diameter: " + i.getDiameter());
 		//}
-		assertEquals(counter.coins.size(), 4);
+		assertEquals(counter.getCoins().size(), 4);
 	}
 	@Test
 	public void coinVectorContainsCoinsRedBackground() {
@@ -116,167 +115,6 @@ public class CounterTests {
 		//	System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
 		//	System.out.println("Diameter: " + i.getDiameter());
 		//}
-		assertEquals(1, counter.coins.size());
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedOneRightOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./coinWpattern.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(6, counter.getResult(counter.coins));
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedOneLeftOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./patternOneLeftOverlap.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(5, counter.getResult(counter.coins));
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedOneCloseLeftOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./patternOneBottomOverlap.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(5, counter.getResult(counter.coins));
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedMultipleRightOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./patternMultipleRightOverlap.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(9, counter.getResult(counter.coins));
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedMultipleLeftOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./patternMultipleLeftOverlap.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(7, counter.getResult(counter.coins));
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedMultipleBottomOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./patternMultipleBottomOverlap.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(7, counter.getResult(counter.coins));
-	}
-	@Test
-	public void coinVectorContainsCoinsStripedMultipleMixedOverlap() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./patternMultipleMixedOverlaps.jpg"));
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
-		}
-		Counter1 counter = new Counter1(bi);
-		counter.analyze();
-		System.out.println("CoinVectorSize: "+ counter.coins.size());
-		for (Coin i:counter.coins) {
-			System.out.println("X: " +i.getXPos() +" Y: " +i.getYPos());
-			System.out.println("Diameter: " + i.getDiameter());
-			System.out.println("ratioLength: " + i.getRatioLength());
-		}
-		System.out.println("Number of Coins: " +counter.getResult(counter.coins));
-		assertEquals(13, counter.getResult(counter.coins));
+		assertEquals(1, counter.getCoins().size());
 	}
 }
