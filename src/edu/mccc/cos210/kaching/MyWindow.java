@@ -18,50 +18,27 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import edu.mccc.cos210.counter.*;
 
+
 public class MyWindow extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public BufferedImage ourImage = null;
 	private Kaching kaching;
 	public MyWindow(Kaching kaching) {
-		this.kaching = kaching;
-		setBackground(Color.WHITE);
-		FilePicker picker = new FilePicker();
-		setPreferredSize(new Dimension(1080, 900));
-		setFocusable(true);
-		add(picker.setUpLoad());
-		add(picker.setUpAnalyze());
-		add(picker.setUpSave());
-	}
-	public BufferedImage loadImage() {
-		BufferedImage bi = null;
-		if (bi == null){
-			try {
-				bi = ImageIO.read(new File("./change.png"));
-				ourImage = bi;
-			} catch (Exception ex) {
-				System.out.println("something fucked up loading img");
-				ex.printStackTrace();
-				System.exit(-1);
-			}
+			this.kaching = kaching;
+			setBackground(Color.GRAY);
+			FilePicker picker = new FilePicker();
+			setPreferredSize(new Dimension(900, 100));
+			setFocusable(true);
+			add(picker.setUpLoad());
+			add(picker.setUpAnalyze());
+			add(picker.setUpSave());
 		}
-		return bi;
-	}
+		
+	
 	public String loadCoins(BufferedImage bi) {
 		return null;
 	}
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponents(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setColor(Color.BLACK);
-		g2d.drawImage(
-			loadImage(),
-			null,
-			0,
-			0
-			);
-		g2d.dispose();
-	}
+	
 // TODO: make it so we can switch between displays. EX: startup -> animation -> end screen
 	public class FilePicker extends JFrame {
 		private static final long serialVersionUID = 1L;
@@ -97,11 +74,10 @@ public class MyWindow extends JPanel {
 						int res = jfc.showOpenDialog(null);
 						if (res == JFileChooser.APPROVE_OPTION) {
 							File file = jfc.getSelectedFile();
-							//System.out.println(file);
 							try {
 								bi = ImageIO.read(file);
 								JOptionPane.showMessageDialog(null, "File selected: " + file.getName());
-								ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+								BufferedImage icon = ImageIO.read(file);
 						        kaching.setPicture(icon);
 
 							} catch (IOException e) {
