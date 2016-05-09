@@ -26,14 +26,15 @@ public class Counter2 extends Counter1 implements ICounter {
 		int maxLeftDistance = maxLeft(index);
 		System.out.println("max Left Distance: " +maxLeftDistance);
 		int maxLeftIndex = maxLeftIndex(index);		
-		int maxRightDistance = maxRight(index);
+		int maxRightDistance = maxRight(index) - 10;
 		System.out.println("max right distance: " +maxRightDistance);
 		int maxRightIndex = maxRightIndex(index);
 		System.out.println("MaxRightX: " +getX(maxRightIndex) +"MaxRightY: " +getY(maxLeftIndex));
 		int reliableDiameter = 0;
 		if (maxLeftDistance + 6 > maxRightDistance) { // overlap on left
 			System.out.println("Overlap on Left");
-			reliableDiameter = maxRightDistance * 2;
+			reliableDiameter = (maxRightDistance - 5) * 2;
+			System.out.println("MaxRight: " +maxRightDistance);
 			if (completeTheCircleLeftOverlap(index, ratioLength) != null){
 				overlappedCoins.add(new Coin(reliableDiameter, ratioLength, topCoinX, topCoinY));
 				overlappedCoins.add(completeTheCircleLeftOverlap(index, ratioLength));
@@ -41,7 +42,8 @@ public class Counter2 extends Counter1 implements ICounter {
 		} else {
 			if (maxRightDistance > maxLeftDistance + 9) { // overlap on right
 				System.out.println("Overlap on Right");
-				reliableDiameter = maxLeftDistance * 2;	
+				reliableDiameter = (maxLeftDistance - 5) * 2;	
+				System.out.println("MaxLeft: " +maxLeftDistance);
 				if (completeTheCircleRightOverlap(index, ratioLength) != null) {
 					overlappedCoins.add(new Coin(reliableDiameter, ratioLength, topCoinX, topCoinY));
 					overlappedCoins.add(completeTheCircleRightOverlap(index, ratioLength));
@@ -212,19 +214,6 @@ public class Counter2 extends Counter1 implements ICounter {
 		}
 		return getIndex(x, y);
 	}
-	private int maxLeft(int i) {
-		int x = getX(i);
-		int y = getY(i);
-		int L = 0;
-		while (pixelOfInterest(x, y)) {
-			int Ltemp = walkLeft(x, y);
-			if (L < Ltemp) {
-				L = Ltemp;
-			}
-			y++;
-		}
-		return L;
-	}
 	private int maxLeftIndex(int i) {
 		int x = getX(i);
 		int y = getY(i);
@@ -241,19 +230,6 @@ public class Counter2 extends Counter1 implements ICounter {
 		x = x - L;
 		return getIndex(x, RYtemp);
 	}
-	private int maxRight(int i) {
-		int x = getX(i);
-		int y = getY(i);
-		int R = 0;
-		while (pixelOfInterest(x, y)) {
-			int Rtemp = walkRight(x, y);
-			if (R < Rtemp) {
-				R = Rtemp;
-			}
-			y++;
-		}
-		return R;
-	}
 	private int maxRightIndex(int i) {
 		int x = getX(i);
 		int y = getY(i);
@@ -267,7 +243,7 @@ public class Counter2 extends Counter1 implements ICounter {
 			}
 			y++;
 		}
-		x += R;
+		x = x + R;
 		return getIndex(x, RYtemp);
 	}
 	private void seeCircle(Point center, double radius) {
