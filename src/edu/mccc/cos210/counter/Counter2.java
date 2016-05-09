@@ -33,10 +33,10 @@ public class Counter2 extends Counter1 implements ICounter {
 		int reliableDiameter = 0;
 		if (maxLeftDistance + 6 > maxRightDistance) { // overlap on left
 			System.out.println("Overlap on Left");
-			reliableDiameter = (maxRightDistance - 5) * 2;
+			reliableDiameter = (maxRightDistance - 2) * 2;
 			System.out.println("MaxRight: " +maxRightDistance);
 			if (completeTheCircleLeftOverlap(index, ratioLength) != null){
-				overlappedCoins.add(new Coin(reliableDiameter, ratioLength, topCoinX, topCoinY));
+				overlappedCoins.add(new Coin(reliableDiameter, averageRed(topCoinX, topCoinY, reliableDiameter / 2), ratioLength, topCoinX, topCoinY));
 				overlappedCoins.add(completeTheCircleLeftOverlap(index, ratioLength));
 			}
 		} else {
@@ -45,7 +45,7 @@ public class Counter2 extends Counter1 implements ICounter {
 				reliableDiameter = (maxLeftDistance - 5) * 2;	
 				System.out.println("MaxLeft: " +maxLeftDistance);
 				if (completeTheCircleRightOverlap(index, ratioLength) != null) {
-					overlappedCoins.add(new Coin(reliableDiameter, ratioLength, topCoinX, topCoinY));
+					overlappedCoins.add(new Coin(reliableDiameter, averageRed(topCoinX, topCoinY, reliableDiameter / 2), ratioLength, topCoinX, topCoinY));
 					overlappedCoins.add(completeTheCircleRightOverlap(index, ratioLength));
 				}
 			} else {
