@@ -174,7 +174,7 @@ public class Counter implements ICounter {
 		int width = 0;
 		int L = 0;
 		int R = 0;
-		while (getPixelRed(x, y) < 65 && getPixelBlue(x, y) < 60 && getPixelGreen(x, y) < 90) {
+		while (getPixelRed(x, y) < 70 && getPixelBlue(x, y) < 70 && getPixelGreen(x, y) < 90) {
 			if (!seenPixel(getIndex(x, y))){
 				seen.add(getIndex(x, y));
 			}
@@ -196,7 +196,7 @@ public class Counter implements ICounter {
 	}
 	public int walkLeftBlackStripe(int x, int y) {
 		int x1 = x - 1;
-		while (getPixelRed(x1, y) < 65 && getPixelBlue(x1, y) < 60 && getPixelGreen(x1, y) < 90) {
+		while (getPixelRed(x1, y) < 70 && getPixelBlue(x1, y) < 70 && getPixelGreen(x1, y) < 90) {
 			if (!seenPixel(getIndex(x1, y))){
 				seen.add(getIndex(x1, y));
 			}
@@ -206,13 +206,39 @@ public class Counter implements ICounter {
 	}
 	public int walkRightBlackStripe(int x, int y) {
 		int x1 = x;
-		while (getPixelRed(x1, y) < 65 && getPixelBlue(x1, y) < 60 && getPixelGreen(x1, y) < 90) {
+		while (getPixelRed(x1, y) < 70 && getPixelBlue(x1, y) < 70 && getPixelGreen(x1, y) < 90) {
 			if (!seenPixel(getIndex(x1, y))){
 				seen.add(getIndex(x1, y));
 			}
 			x1++;
 		}
 		return x1 - x;
+	}
+	public int maxLeft(int i) {
+		int x = getX(i);
+		int y = getY(i);
+		int L = 0;
+		while (pixelOfInterest(x, y)) {
+			int Ltemp = walkLeft(x, y);
+			if (L < Ltemp) {
+				L = Ltemp;
+			}
+			y++;
+		}
+		return L;
+	}
+	public int maxRight(int i) {
+		int x = getX(i);
+		int y = getY(i);
+		int R = 0;
+		while (pixelOfInterest(x, y)) {
+			int Rtemp = walkRight(x, y);
+			if (R < Rtemp) {
+				R = Rtemp;
+			}
+			y++;
+		}
+		return R;
 	}
 	public int blackStripeLength() {
 		int length = 0;
