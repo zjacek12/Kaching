@@ -2,22 +2,16 @@ package edu.mccc.cos210.coin;
 
 public class Coin {
 	private int size = 0;
-	private String color = null;
+	private int averageRed = 0;
 	private int value = 1;
 	private int xPos = 0;
 	private int yPos = 0;
 	private int ratioLength = 0;
 	
-	public Coin(int size, String color, int ratioL,int xPos, int yPos) {
+	public Coin(int size, int averageRed, int ratioL,int xPos, int yPos) {
 		this.ratioLength = ratioL;
 		this.size = size;
-		this.color = color;
-		this.xPos = xPos;
-		this.yPos = yPos;
-	}
-	public Coin(int size, String color, int xPos, int yPos) {
-		this.size = size;
-		this.color = color;
+		this.averageRed = averageRed;
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
@@ -32,17 +26,24 @@ public class Coin {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
+	/*
+	 * Quarter: .995 inch
+	 * Nickel: 
+	*/
+	private void calcValue() {
+		
+	}
 	public int getDiameter() {
 		return size;
 	}
 	public void setDiameter(int size) {
 		this.size = size;
 	}
-	public String getColor() {
-		return color;
+	public int getaverageRed() {
+		return averageRed;
 	}
-	public void setColor(String color) {
-		this.color = color;
+	public void setaverageRed(int averageRed) {
+		this.averageRed = averageRed;
 	}
 	public double getValue() {
 		return value;

@@ -20,7 +20,7 @@ public class Counter2 extends Counter1 implements ICounter {
 		int index = getIndex(topCoinX, topCoinY);
 		System.out.println("TopX: " +topCoinX);
 		System.out.println("TopY : " +topCoinY);
-		int ratioLength = redStripeLength();
+		int ratioLength = blackStripeLength();
 		int downDistance = walkDown(index);
 		System.out.println("downDistance: " +downDistance);
 		int maxLeftDistance = maxLeft(index);
@@ -39,7 +39,7 @@ public class Counter2 extends Counter1 implements ICounter {
 				overlappedCoins.add(completeTheCircleLeftOverlap(index, ratioLength));
 			}
 		} else {
-			if (maxRightDistance > maxLeftDistance + 5) { // overlap on right
+			if (maxRightDistance > maxLeftDistance + 9) { // overlap on right
 				System.out.println("Overlap on Right");
 				reliableDiameter = maxLeftDistance * 2;	
 				if (completeTheCircleRightOverlap(index, ratioLength) != null) {
@@ -50,10 +50,11 @@ public class Counter2 extends Counter1 implements ICounter {
 				if (downDistance > (maxLeftDistance * 2) - 5 || downDistance > (maxRightDistance * 2) - 5
 						&& getY(maxLeftIndex) - getY(maxRightIndex) < 10) {
 					System.out.println("Overlap is Below");
-					if (completeTheCircleBelowOverlap(index, ratioLength).get(0) != null 
-							&& completeTheCircleBelowOverlap(index, ratioLength).get(1) != null) {
+					//if (completeTheCircleBelowOverlap(index, ratioLength).get(0) != null 
+					//		&& completeTheCircleBelowOverlap(index, ratioLength).get(1) != null) {
+				//		System.out.println("actualBelowOverlap");
 						overlappedCoins.addAll(completeTheCircleBelowOverlap(index, ratioLength));
-					}
+				//	}
 				}
 			}
 		}
@@ -74,11 +75,11 @@ public class Counter2 extends Counter1 implements ICounter {
 		}
 		int topOfCoinX = (int)cir1.center.x;
 		int topOfCoinY = (int)(cir1.center.y - cir1.radius);
-		seeSides(getIndex(topOfCoinX, topOfCoinY));
+		seeCircle(cir1.center, cir1.radius);
 		System.out.println("topX: " +topOfCoinX);
 		System.out.println("topY: " +topOfCoinY);
 		System.out.println("radius: " +cir1.radius);
-		return new Coin((int) cir1.radius * 2 - 5, ratioL, topOfCoinX, topOfCoinY);
+		return new Coin((int) cir1.radius * 2 - 5, averageRed(topOfCoinX, topOfCoinY, (int)cir1.radius * 2), ratioL, topOfCoinX, topOfCoinY);
 	}
 	private Coin completeTheCircleRightOverlap(int index, int ratioL){
 		Point p1 = new Point(getX(maxRightIndex(index)),getY(maxRightIndex(index)));
@@ -96,15 +97,15 @@ public class Counter2 extends Counter1 implements ICounter {
 		}
 		int topOfCoinX = (int)cir1.center.x;
 		int topOfCoinY = (int)(cir1.center.y - cir1.radius);
-		seeSides(getIndex(topOfCoinX, topOfCoinY));
+		seeCircle(cir1.center, cir1.radius);
 		System.out.println("topXz: " +topOfCoinX);
 		System.out.println("topYz: " +topOfCoinY);
 		System.out.println("radius: " +cir1.radius);
-		return new Coin((int) cir1.radius * 2 - 5, ratioL, topOfCoinX, topOfCoinY);
+		System.out.println("Center: " +cir1.center);
+		return new Coin((int) cir1.radius * 2 - 5, averageRed(topOfCoinX, topOfCoinY, (int)cir1.radius * 2), ratioL, topOfCoinX, topOfCoinY);
 	}
 	private Vector<Coin> completeTheCircleBelowOverlap(int index, int ratioL) {
 		Vector<Coin> localCoins = new Vector<Coin>(2);
-		localCoins.setSize(2);
 		int topY = getY(index);
 		int botY = getY(walkDownIndex(index));
 		int leftY = getY(maxLeftIndex(index));
@@ -129,25 +130,25 @@ public class Counter2 extends Counter1 implements ICounter {
 			}
 			int topOfCoinX = (int)cir1.center.x;
 			int topOfCoinY = (int)(cir1.center.y - cir1.radius);
-			seeSides(getIndex(topOfCoinX, topOfCoinY));
+			seeCircle(cir1.center, cir1.radius);
 			System.out.println("topXz: " +topOfCoinX);
 			System.out.println("topYz: " +topOfCoinY);
 			System.out.println("radius: " +cir1.radius);
-			localCoins.add(new Coin((int) cir1.radius * 2 - 5, ratioL, topOfCoinX, topOfCoinY));
-			p1 = new Point(getX(index),getY(index));
-			p2 = new Point(topOfCoinX - walkLeft(topOfCoinX, topOfCoinY), topOfCoinY);
-			p3 = new Point(topOfCoinX + walkRight(topOfCoinX, topOfCoinY), topOfCoinY);
+			localCoins.add(0, (new Coin((int)(cir1.radius * 2), averageRed(topOfCoinX, topOfCoinY, (int)cir1.radius * 2), ratioL, topOfCoinX, topOfCoinY + 5)));
+			Point z1 = new Point(getX(index),getY(index));
+			Point z2 = new Point(topOfCoinX - walkLeft(topOfCoinX, topOfCoinY), topOfCoinY);
+			Point z3 = new Point(topOfCoinX + walkRight(topOfCoinX, topOfCoinY), topOfCoinY);
 			System.out.println("Point1: " +p1);
 			System.out.println("Point2: " +p2);
 			System.out.println("Point3: " +p3);
-			CircleThree.Circle cir2 = CircleThree.circleFromPoints(p1, p2, p3);
+			CircleThree.Circle cir2 = CircleThree.circleFromPoints(z1, z2, z3);
 			int topOfCoinX2 = (int)cir2.center.x;
 			int topOfCoinY2 = (int)(cir2.center.y - cir2.radius);
-			seeSides(getIndex(topOfCoinX2, topOfCoinY2));
+			seeCircle(cir2.center, cir2.radius);
 			System.out.println("topXz: " +topOfCoinX2);
 			System.out.println("topYz: " +topOfCoinY2);
 			System.out.println("radius: " +cir2.radius);
-			localCoins.add(new Coin((int) cir2.radius * 2 - 5, ratioL, topOfCoinX2, topOfCoinY2));
+			localCoins.add(1, (new Coin((int)cir2.radius * 2, averageRed(topOfCoinX2, topOfCoinY2, (int)cir2.radius * 2), ratioL, topOfCoinX2, topOfCoinY2)));
 		}
 		if (botY - leftY > leftY - topY && botY - rightY > rightY - topY) { // bigger coin is on top
 			System.out.println("bigger coin on top");
@@ -164,11 +165,11 @@ public class Counter2 extends Counter1 implements ICounter {
 			}
 			int topOfCoinX = (int)cir1.center.x;
 			int topOfCoinY = (int)(cir1.center.y - cir1.radius);
-			seeSides(getIndex(topOfCoinX, topOfCoinY));
+			seeCircle(cir1.center, cir1.radius);
 			System.out.println("topXz: " +topOfCoinX);
 			System.out.println("topYz: " +topOfCoinY);
 			System.out.println("radius: " +cir1.radius);
-			localCoins.add(new Coin((int) cir1.radius * 2 - 5, ratioL, topOfCoinX, topOfCoinY));
+			localCoins.add(0, (new Coin((int) cir1.radius * 2, averageRed(topOfCoinX, topOfCoinY, (int)cir1.radius * 2), ratioL, topOfCoinX, topOfCoinY + 5)));
 			int botOfCoinY = (int)(cir1.center.y + cir1.radius);
 			p1 = new Point(getX(walkDownIndex(index)),getY(walkDownIndex(index)));
 			p2 = new Point(topOfCoinX - walkLeft(topOfCoinX, botOfCoinY), botOfCoinY);
@@ -179,11 +180,11 @@ public class Counter2 extends Counter1 implements ICounter {
 			CircleThree.Circle cir2 = CircleThree.circleFromPoints(p1, p2, p3);
 			int topOfCoinX2 = (int)cir2.center.x;
 			int topOfCoinY2 = (int)(cir2.center.y - cir2.radius);
-			seeSides(getIndex(topOfCoinX2, topOfCoinY2));
+			seeCircle(cir2.center, cir2.radius);
 			System.out.println("topXz: " +topOfCoinX2);
 			System.out.println("topYz: " +topOfCoinY2);
 			System.out.println("radius: " +cir2.radius);
-			localCoins.add(new Coin((int) cir2.radius * 2 - 5, ratioL, topOfCoinX2, topOfCoinY2));
+			localCoins.add(1, (new Coin((int) cir2.radius * 2, averageRed(topOfCoinX2, topOfCoinY2, (int)cir2.radius * 2), ratioL, topOfCoinX2, topOfCoinY2)));
 		}
 		return localCoins;
 	}
@@ -224,10 +225,6 @@ public class Counter2 extends Counter1 implements ICounter {
 		}
 		return L;
 	}
-	public double pythagorean(int x , int y) {
-        double c = Math.sqrt((x*x)+(y*y));
-        return c;
-    }
 	private int maxLeftIndex(int i) {
 		int x = getX(i);
 		int y = getY(i);
@@ -273,37 +270,15 @@ public class Counter2 extends Counter1 implements ICounter {
 		x += R;
 		return getIndex(x, RYtemp);
 	}
-	private int walkRight(int x, int y) {
-		int x1 = x;
-		while (pixelOfInterest(x1, y)) {
-			if (!seenPixel(getIndex(x1, y))){
-				seen.add(getIndex(x1, y));
-			}
-			x1++;
-		}
-		return x1 - x;
-	}
-	private int walkLeft(int x, int y) {
-		int x1 = x - 1;
-		while (pixelOfInterest(x1, y)) {
-			if (!seenPixel(getIndex(x1, y))){
-				seen.add(getIndex(x1, y));
-			}
-			x1--;
-		}
-		return x - x1;
-	}
-	private void seeSides(int i) {
-		int x = getX(i);
-		int y = getY(i) + 1;
-		while (pixelOfInterest(x, y)) {
-			walkLeft(x, y);
-			walkRight(x, y);
-			y++;
-		}
-	}
 	private void seeCircle(Point center, double radius) {
-		
+		for (int i = 0; i < interest.size(); i++) {
+			int index = interest.get(i);
+			if (isInCircle((int)center.x, (int)center.y, (int)radius, getX(index), getY(index))) {
+				if (!seenPixel(getIndex(getX(index), getY(index)))) {
+					seen.add(index);
+				}
+			}
+		}
 	}
 	public int getTopCoinX() {
 		return topCoinX;
