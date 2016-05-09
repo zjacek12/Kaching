@@ -276,13 +276,36 @@ public class Counter implements ICounter {
 		}
 	}
 	@Override
+		@Override
 	public int getResult(Vector<Coin> a) {
 		int total = 0;
+		int redValue= 0;
+		int divisor = 0;
+		int allAverage = 0;
+		for (Coin coin:a) {
+			if (coin != null){
+				if(coin.getValue() == 10){
+				redValue += coin.getaverageRed();
+				divisor++;
+				}
+			}
+		}
+		allAverage = (redValue / divisor) - 20; 
+		for (Coin coin:a) {
+			if(coin.getValue() == 10){
+				
+				if(coin.getaverageRed() < allAverage){
+					coin.setValue(1);
+				}
+			}
+			
+		}
 		for (Coin coin:a) {
 			if (coin != null){
 				total += coin.getValue();
 			}
 		}
+		
 		return total;
 	}
 }
