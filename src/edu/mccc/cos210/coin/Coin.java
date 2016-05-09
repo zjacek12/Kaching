@@ -28,10 +28,18 @@ public class Coin {
 	}
 	/*
 	 * Quarter: .995 inch
-	 * Nickel: 
+	 * Nickel: .835 inch
+	 * Dime: .705 inch
+	 * penny: .75 inch
 	*/
 	private void calcValue() {
-		
+		if (ratioLength - size < 10) {
+			value = 25;
+		} else {
+			if (ratioLength - size > 10 && ratioLength - size < 16) {
+				value = 5;
+			}
+		}
 	}
 	public int getDiameter() {
 		return size;
