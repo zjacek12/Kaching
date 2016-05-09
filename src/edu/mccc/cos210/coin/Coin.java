@@ -21,11 +21,13 @@ public class Coin {
 		this.size = size;
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.calcValue();
 	}
 	public Coin(int size, int xPos, int yPos) {
 		this.size = size;
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.calcValue();
 	}
 	/*
 	 * Quarter: .995 inch
@@ -36,10 +38,10 @@ public class Coin {
 	private void calcValue() {
 		double doubleRatio = (double)ratioLength;
 		double doubleSize = (double)size;
-		if (doubleSize / doubleRatio > 0.9) {
+		if (doubleSize / doubleRatio >= 0.88) {
 			this.setValue(25);
 		} else {
-			if (doubleSize / doubleRatio > 0.7) {
+			if (doubleSize / doubleRatio >= 0.81) {
 				this.setValue(5);
 			} else {
 					this.setValue(10);
