@@ -75,8 +75,8 @@ public class MyWindow extends JPanel {
 								bi = ImageIO.read(file);
 								JOptionPane.showMessageDialog(null, "File selected: " + file.getName());
 								BufferedImage icon = ImageIO.read(file);
-						        kaching.setPicture(icon);
-
+						        	kaching.setPicture(icon);
+								kaching.rewrite("$0.00");
 							} catch (IOException e) {
 								JOptionPane.showMessageDialog(null, "File cannot be read.");
 								e.printStackTrace();
@@ -105,7 +105,8 @@ public class MyWindow extends JPanel {
 								}
 								kaching.setPicture(bi);
 								System.out.println((endTime - startTime) / 1000.0 + "s");
-								JOptionPane.showMessageDialog(null, "We found " + result + " coin(s) in your image.");
+								NumberFormat formatter = NumberFormat.getCurrencyInstance();
+						        	kaching.rewrite(formatter.format((double)result/100));
 							} else {
 								JOptionPane.showMessageDialog(null, "Image not selected");
 							}
