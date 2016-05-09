@@ -14,7 +14,6 @@ public class Counter1 extends Counter implements ICounter {
 	public void analyze() {
 		int ratioLength = blackStripeLength();
 		for (int i = 0; i < interest.size(); i++) {
-			//if (!seenPixel(i) && pixelOfInterest(i)) {
 			int index = interest.get(i);
 			if (!seenPixel(index)) {
 				int height = walkDownNoAdd(index);
@@ -25,11 +24,11 @@ public class Counter1 extends Counter implements ICounter {
 				}
 				int width = walkSides(midpointX(index));
 				System.out.println("X: " +getX(index) +" Y: " +getY(index) +" height: " +height + " width: " +width);
-				if ((width - height < 15 && height - width < 15) && height > width / 5 && width > 10) {
+				if ((width - height < 8 && height - width < 8) && height > width / 5 && width > 10) {
 					int averageRed = averageRed(getX(index), getY(index), height);
 					coins.add(new Coin(height, averageRed, ratioLength, getX(index), getY(index)));
 				} else {
-					if ((height > width + 15 || width > height + 15)
+					if ((height > width + 8 || width > height + 8)
 							&& (height > width / 5 && width > 10)
 							&& (width > height / 5 && height > 10)) {
 						System.out.println("I got to counter 2");
