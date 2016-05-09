@@ -39,7 +39,7 @@ public class Coin {
 		if (doubleSize / doubleRatio > 0.9) {
 			this.setValue(25);
 		} else {
-			if (doubleSize / doubleRatio > 0.75) {
+			if (doubleSize / doubleRatio > 0.7) {
 				this.setValue(5);
 			} else {
 					this.setValue(10);
