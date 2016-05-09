@@ -14,6 +14,7 @@ public class Coin {
 		this.averageRed = averageRed;
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.calcValue();
 	}
 	public Coin(int size, int ratioL,int xPos, int yPos) {
 		this.ratioLength = ratioL;
@@ -32,12 +33,21 @@ public class Coin {
 	 * Dime: .705 inch
 	 * penny: .75 inch
 	*/
+	@SuppressWarnings("unused")
 	private void calcValue() {
 		if (ratioLength - size < 10) {
-			value = 25;
+			this.setValue(25);
 		} else {
 			if (ratioLength - size > 10 && ratioLength - size < 16) {
-				value = 5;
+				this.setValue(5);
+			} else {
+				if (ratioLength - size > 16 && ratioLength - size < 20){
+					if (this.getaverageRed() < 125) {
+						this.setValue(10);
+					} else {
+						this.setValue(1);
+					}
+				}
 			}
 		}
 	}
