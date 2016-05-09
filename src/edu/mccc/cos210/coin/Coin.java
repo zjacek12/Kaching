@@ -33,21 +33,16 @@ public class Coin {
 	 * Dime: .705 inch
 	 * penny: .75 inch
 	*/
-	@SuppressWarnings("unused")
 	private void calcValue() {
-		if (ratioLength - size < 10) {
+		double doubleRatio = (double)ratioLength;
+		double doubleSize = (double)size;
+		if (doubleSize / doubleRatio > 0.9) {
 			this.setValue(25);
 		} else {
-			if (ratioLength - size > 10 && ratioLength - size < 16) {
+			if (doubleSize / doubleRatio > 0.75) {
 				this.setValue(5);
 			} else {
-				if (ratioLength - size > 16 && ratioLength - size < 20){
-					if (this.getaverageRed() < 125) {
-						this.setValue(10);
-					} else {
-						this.setValue(1);
-					}
-				}
+					this.setValue(10);
 			}
 		}
 	}
